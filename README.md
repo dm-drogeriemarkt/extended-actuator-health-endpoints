@@ -5,3 +5,9 @@ ExtendedHealthEndpointAutoConfiguration configures HealthIndicators like Spring 
  * DetailHealthIndicator (includes all, combined may take up to 30 seconds)
 
 Beans implementing one of these Interfaces are automatically included in one of these health endpoint categories.
+
+ExtendedHealthEndpoint paths can be extended via properties:
+
+* extended.health.aliveId
+* extended.health.basicId
+* extended.health.detailId

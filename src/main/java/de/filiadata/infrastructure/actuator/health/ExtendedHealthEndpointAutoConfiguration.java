@@ -1,8 +1,19 @@
 package de.filiadata.infrastructure.actuator.health;
 
+import de.filiadata.infrastructure.actuator.health.endpoint.AliveHealthEndpoint;
+import de.filiadata.infrastructure.actuator.health.endpoint.BasicHealthEndpoint;
+import de.filiadata.infrastructure.actuator.health.endpoint.DetailHealthEndpoint;
+import de.filiadata.infrastructure.actuator.health.indicator.ApplicationAliveIndicator;
+import de.filiadata.infrastructure.actuator.health.indicator.BasicHealthIndicator;
+import de.filiadata.infrastructure.actuator.health.indicator.DetailHealthIndicator;
+import de.filiadata.infrastructure.actuator.health.mvcendpoint.AliveHealthController;
+import de.filiadata.infrastructure.actuator.health.mvcendpoint.BasicHealthController;
+import de.filiadata.infrastructure.actuator.health.mvcendpoint.DetailHealthController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.actuate.health.OrderedHealthAggregator;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,36 +31,53 @@ import java.util.Map;
  * Beans implementing one of these Interfaces are automatically included in one of these health endpoint categories.
  */
 @Configuration
+@ConditionalOnWebApplication
 @EnableConfigurationProperties(ExtendedHealthProperties.class)
 public class ExtendedHealthEndpointAutoConfiguration {
-
-    @Autowired(required = false)
-    public Map<String, ApplicationAliveIndicator> aliveIndicators = new HashMap<>();
 
     @Autowired
     private ExtendedHealthProperties properties;
 
-    @Bean
-    public ExtendedHealthEndpoint<ApplicationAliveIndicator> applicationAliveEndpoint() {
-
-        return new ExtendedHealthEndpoint<>(properties.getAliveId(), new OrderedHealthAggregator(), aliveIndicators);
-    }
+    @Autowired(required = false)
+    public Map<String, ApplicationAliveIndicator> aliveIndicators = new HashMap<>();
 
     @Autowired(required = false)
     public Map<String, BasicHealthIndicator> basicHealthIndicators = new HashMap<>();
 
-    @Bean
-    public ExtendedHealthEndpoint<BasicHealthIndicator> basicHealthEndpoint() {
-
-        return new ExtendedHealthEndpoint<>(properties.getBasicId(), new OrderedHealthAggregator(), basicHealthIndicators);
-    }
-
     @Autowired(required = false)
     public Map<String, HealthIndicator> allHealthIndicators = new HashMap<>();
 
-    @Bean
-    public ExtendedHealthEndpoint<HealthIndicator> detailHealthEndpoint() {
+    public AliveHealthEndpoint applicationAliveEndpoint() {
 
-        return new ExtendedHealthEndpoint<>(properties.getDetailId(), new OrderedHealthAggregator(), allHealthIndicators);
+        return new AliveHealthEndpoint(properties.getAliveId(), new OrderedHealthAggregator(), aliveIndicators);
     }
+
+    public BasicHealthEndpoint basicHealthEndpoint() {
+
+        return new BasicHealthEndpoint(properties.getBasicId(), new OrderedHealthAggregator(), basicHealthIndicators);
+    }
+
+    public DetailHealthEndpoint detailHealthEndpoint() {
+
+        return new DetailHealthEndpoint(properties.getDetailId(), new OrderedHealthAggregator(), allHealthIndicators);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(AliveHealthController.class)
+    public AliveHealthController aliveMvcEndpoint() {
+        return new AliveHealthController(applicationAliveEndpoint());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(BasicHealthController.class)
+    public BasicHealthController basicMvcEndpoint() {
+        return new BasicHealthController(basicHealthEndpoint());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(DetailHealthController.class)
+    public DetailHealthController detailMvcEndpoint() {
+        return new DetailHealthController(detailHealthEndpoint());
+    }
+
 }

@@ -1,5 +1,6 @@
 package de.filiadata.infrastructure.actuator.health;
 
+import de.filiadata.infrastructure.actuator.health.endpoint.ExtendedHealthEndpoint;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.actuate.health.*;

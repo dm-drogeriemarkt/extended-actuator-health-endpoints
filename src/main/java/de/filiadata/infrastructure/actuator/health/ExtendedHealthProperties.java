@@ -5,9 +5,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "extended.health")
 public class ExtendedHealthProperties {
 
-    private String aliveId;
-    private String basicId;
-    private String detailId;
+    private String aliveId = "health/alive";
+    private String basicId = "health/basic";
+    private String detailId = "health/detail";
 
     /**
      * Endpoint id (used as url path, relative to spring boot management path) for alive check

@@ -12,7 +12,7 @@ public class ExtendedHealthProperties {
     /**
      * Endpoint id (used as url path, relative to spring boot management path) for alive check
      *
-     * @return
+     * @return aliveId used as endpoint URL
      */
     public String getAliveId() {
         return aliveId;
@@ -21,7 +21,7 @@ public class ExtendedHealthProperties {
     /**
      * Endpoint id (used as url path, relative to spring boot management path) for alive check
      *
-     * @param aliveId
+     * @param aliveId aliveId used as endpoint URL
      */
     public void setAliveId(String aliveId) {
         this.aliveId = aliveId;
@@ -30,7 +30,7 @@ public class ExtendedHealthProperties {
     /**
      * Endpoint id (used as url path, relative to spring boot management path) for basic check
      *
-     * @return
+     * @return basicId used as endpoint URL
      */
     public String getBasicId() {
         return basicId;
@@ -39,7 +39,7 @@ public class ExtendedHealthProperties {
     /**
      * Endpoint id (used as url path, relative to spring boot management path) for basic check
      *
-     * @param basicId
+     * @param basicId basicId used as endpoint URL
      */
     public void setBasicId(String basicId) {
         this.basicId = basicId;
@@ -48,7 +48,7 @@ public class ExtendedHealthProperties {
     /**
      * Endpoint id (used as url path, relative to spring boot management path) for detail check
      *
-     * @return
+     * @return detailId used as endpoint URL
      */
     public String getDetailId() {
         return detailId;
@@ -57,7 +57,7 @@ public class ExtendedHealthProperties {
     /**
      * Endpoint id (used as url path, relative to spring boot management path) for detail check
      *
-     * @param detailId
+     * @param detailId detailId used as endpoint URL
      */
     public void setDetailId(String detailId) {
         this.detailId = detailId;

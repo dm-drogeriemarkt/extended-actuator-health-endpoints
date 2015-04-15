@@ -15,12 +15,12 @@ import java.util.Map;
 
 /**
  * ExtendedHealthEndpoint is meant to aggreagte HealthIndicators like Spring Boots HealthEndpoint, but with different levels of HealthIndicators, currently:
- * <p/>
+ *
  * * {@link ApplicationAliveIndicator} (faster than basic, used by load balancer to decide if application is alive)
  * * {@link BasicHealthIndicator} (only basic, combined should not take longer than 5 seconds)
  * * {@link DetailHealthIndicator} (includes all, combined may take up to 30 seconds)
  *
- * @param <T>
+ * @param <T> HealthIndicator type (either ApplicationAliveIndicator, BasicHealthIndicator or DetailHealthIndicator)
  */
 public class ExtendedHealthEndpoint<T extends HealthIndicator> extends AbstractEndpoint<Health> {
 
@@ -32,9 +32,9 @@ public class ExtendedHealthEndpoint<T extends HealthIndicator> extends AbstractE
     /**
      * Create new ExtendedHealthEndpoint.
      *
-     * @param id
-     * @param healthAggregator
-     * @param healthIndicators
+     * @param id part of the endpoint URL
+     * @param healthAggregator usually a new instance of OrderedHealthAggregator
+     * @param healthIndicators a map with HealthIndicators
      */
     public ExtendedHealthEndpoint(String id, HealthAggregator healthAggregator, Map<String, T> healthIndicators) {
         super(id);
@@ -55,6 +55,8 @@ public class ExtendedHealthEndpoint<T extends HealthIndicator> extends AbstractE
 
     /**
      * Turns the bean name into a key that can be used in the map of health information.
+     *
+     * @param name the key cuts 'healthindicator' from the name
      */
     private String getKey(String name) {
         int index = name.toLowerCase().indexOf("healthindicator");

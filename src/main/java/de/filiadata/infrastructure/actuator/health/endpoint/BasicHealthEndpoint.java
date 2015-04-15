@@ -10,9 +10,9 @@ public class BasicHealthEndpoint extends ExtendedHealthEndpoint<BasicHealthIndic
     /**
      * Create new BasicHealthEndpoint.
      *
-     * @param id
-     * @param healthAggregator
-     * @param healthIndicators
+     * @param id part of the endpoint URL
+     * @param healthAggregator usually a new instance of OrderedHealthAggregator
+     * @param healthIndicators a map with HealthIndicators
      */
     public BasicHealthEndpoint(String id, HealthAggregator healthAggregator, Map<String, BasicHealthIndicator> healthIndicators) {
         super(id, healthAggregator, healthIndicators);

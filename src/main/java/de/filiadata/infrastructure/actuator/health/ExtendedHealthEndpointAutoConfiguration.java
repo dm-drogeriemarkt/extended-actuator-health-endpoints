@@ -23,11 +23,11 @@ import java.util.Map;
 
 /**
  * ExtendedHealthEndpointAutoConfiguration configures HealthIndicators like Spring Boots HealthEndpoint, but with different levels of HealthIndicators, currently:
- * <p/>
+ *
  * * {@link ApplicationAliveIndicator} (faster than basic, used by load balancer to decide if application is alive)
  * * {@link BasicHealthIndicator} (only basic, combined should not take longer than 5 seconds)
  * * {@link DetailHealthIndicator} (includes all, combined may take up to 30 seconds)
- * <p/>
+ *
  * Beans implementing one of these Interfaces are automatically included in one of these health endpoint categories.
  */
 @Configuration

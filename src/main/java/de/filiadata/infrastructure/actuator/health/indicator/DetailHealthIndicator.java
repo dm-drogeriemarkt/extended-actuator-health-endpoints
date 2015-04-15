@@ -1,6 +1,7 @@
 package de.filiadata.infrastructure.actuator.health.indicator;
 
 import de.filiadata.infrastructure.actuator.health.endpoint.ExtendedHealthEndpoint;
+import org.springframework.boot.actuate.health.HealthIndicator;
 
 /**
  * Marker interface for detailed health indicators that should be available in /health/detail.
@@ -9,5 +10,5 @@ import de.filiadata.infrastructure.actuator.health.endpoint.ExtendedHealthEndpoi
  *
  * @see ExtendedHealthEndpoint
  */
-public interface DetailHealthIndicator extends BasicHealthIndicator {
+public interface DetailHealthIndicator extends HealthIndicator {
 }

@@ -20,7 +20,7 @@ public class AliveHealthController extends AbstractExtendedHealthMvcEndpoint<Ali
         try {
             health = this.extendedHealthEndpoint.invoke();
         } catch (Exception e) {
-            health = Health.down().withDetail("unexpectedException", e.getMessage()).build();
+            health = Health.down(e).build();
         }
 
         HttpStatus status = this.statusMapping.get(health.getStatus().getCode());

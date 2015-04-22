@@ -37,14 +37,26 @@ public class ExtendedHealthMvcEndpointTest {
     }
 
     @Test
+    public void upWithExceptionHandling() {
+
+        when(extendedHealthEndpoint.invoke()).thenReturn(new Health.Builder().up().build());
+
+        ResponseEntity<Health> result = this.extendedHealthMvcEndpoint.health();
+
+        assertThat(result.getStatusCode(), is(HttpStatus.OK));
+        assertThat(result.getBody().getStatus(), is(Status.UP));
+    }
+
+    @Test
     public void down() {
 
         when(extendedHealthEndpoint.invoke()).thenReturn(new Health.Builder().down().build());
 
         ResponseEntity<Health> result = this.extendedHealthMvcEndpoint.health();
 
-        assertThat(result.getBody().getStatus(), is(Status.DOWN));
         assertThat(result.getStatusCode(), is(HttpStatus.SERVICE_UNAVAILABLE));
+        assertThat(result.getBody().getStatus(), is(Status.DOWN));
     }
+
 
 }

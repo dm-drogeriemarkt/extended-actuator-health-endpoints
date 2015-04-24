@@ -16,15 +16,8 @@ public class AliveHealthController extends AbstractExtendedHealthMvcEndpoint<Ali
 
     @RequestMapping("/${extended.health.aliveId:health/alive}")
     public ResponseEntity<Health> health() {
-        Health health;
-        try {
-            health = this.extendedHealthEndpoint.invoke();
-        } catch (Exception e) {
-            health = Health.down(e).build();
-        }
-
+        Health health = this.extendedHealthEndpoint.invoke();
         HttpStatus status = this.statusMapping.get(health.getStatus().getCode());
         return new ResponseEntity<>(health, status);
     }
-
 }

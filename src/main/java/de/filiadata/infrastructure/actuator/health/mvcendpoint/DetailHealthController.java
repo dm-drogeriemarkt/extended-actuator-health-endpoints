@@ -16,15 +16,8 @@ public class DetailHealthController extends AbstractExtendedHealthMvcEndpoint<De
 
     @RequestMapping("/${extended.health.detailId:health/detail}")
     public ResponseEntity<Health> health() {
-        Health health;
-        try {
-            health = this.extendedHealthEndpoint.invoke();
-        } catch (Exception e) {
-            health = Health.down(e).build();
-        }
-
+        Health health = this.extendedHealthEndpoint.invoke();
         HttpStatus status = this.statusMapping.get(health.getStatus().getCode());
         return new ResponseEntity<>(health, status);
     }
-
 }

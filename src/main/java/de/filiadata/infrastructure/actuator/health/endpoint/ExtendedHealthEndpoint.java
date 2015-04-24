@@ -14,7 +14,7 @@ import org.springframework.boot.actuate.health.HealthIndicator;
 import java.util.Map;
 
 /**
- * ExtendedHealthEndpoint is meant to aggreagte HealthIndicators like Spring Boots HealthEndpoint, but with different levels of HealthIndicators, currently:
+ * ExtendedHealthEndpoint is meant to aggregate HealthIndicators like Spring Boots HealthEndpoint, but with different levels of HealthIndicators, currently:
  *
  * * {@link ApplicationAliveIndicator} (faster than basic, used by load balancer to decide if application is alive)
  * * {@link BasicHealthIndicator} (only basic, combined should not take longer than 5 seconds)
@@ -45,6 +45,16 @@ public class ExtendedHealthEndpoint<T extends HealthIndicator> extends AbstractE
 
     @Override
     public Health invoke() {
+        Health health;
+        try {
+            health = internalInvokeHealthIndicators();
+        } catch (Exception e) {
+            health = Health.down(e).build();
+        }
+        return health;
+    }
+
+    private Health internalInvokeHealthIndicators() {
         CompositeHealthIndicator healthIndicator = new CompositeHealthIndicator(
                 healthAggregator);
         for (Map.Entry<String, T> h : healthIndicators.entrySet()) {

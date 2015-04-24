@@ -18,22 +18,12 @@ public class ConfigurableHealthEndpointTest {
     @Before
     public void init() {
         healthAggregator = new OrderedHealthAggregator();
-        healthIndicators.put("FooHealthIndicator", new HealthIndicator() {
-            @Override
-            public Health health() {
-                return Health.up().build();
-            }
-        });
-        healthIndicators.put("Bar", new HealthIndicator() {
-            @Override
-            public Health health() {
-                return Health.down().build();
-            }
-        });
+        healthIndicators.put("FooHealthIndicator", () -> Health.up().build());
+        healthIndicators.put("Bar", () -> Health.down().build());
     }
 
     @Test
-    public void up() throws Exception {
+    public void down() throws Exception {
 
         ExtendedHealthEndpoint basic = new ExtendedHealthEndpoint("test", healthAggregator, healthIndicators);
         assertThat(basic.invoke().getStatus(), is(Status.DOWN));

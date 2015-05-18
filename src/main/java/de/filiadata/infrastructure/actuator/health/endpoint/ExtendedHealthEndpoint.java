@@ -49,6 +49,7 @@ public class ExtendedHealthEndpoint<T extends HealthIndicator> extends AbstractE
         try {
             health = internalInvokeHealthIndicators();
         } catch (Exception e) {
+            LOG.error("Unexpected error in HealthIndicator:", e);
             health = Health.down(e).build();
         }
         return health;

@@ -21,6 +21,7 @@
 
         <!-- Disables strict JavaDoc doclint rules in JDK8 -->
         <additionalparam>-Xdoclint:none</additionalparam>
+        <sonar.exclusions>**/generated/*,**/*Config*,**/*Constants*,**/*Entity*,**/*Document*,**/*Mock*,**/*Properties*</sonar.exclusions>
     </properties>
 
     <build>

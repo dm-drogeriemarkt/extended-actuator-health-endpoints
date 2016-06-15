@@ -10,8 +10,10 @@ import de.filiadata.infrastructure.actuator.health.mvcendpoint.AliveHealthContro
 import de.filiadata.infrastructure.actuator.health.mvcendpoint.BasicHealthController;
 import de.filiadata.infrastructure.actuator.health.mvcendpoint.DetailHealthController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.HealthIndicatorAutoConfiguration;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.actuate.health.OrderedHealthAggregator;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -32,6 +34,7 @@ import java.util.Map;
  */
 @Configuration
 @ConditionalOnWebApplication
+@AutoConfigureAfter(HealthIndicatorAutoConfiguration.class)
 @EnableConfigurationProperties(ExtendedHealthProperties.class)
 public class ExtendedHealthEndpointAutoConfiguration {
 

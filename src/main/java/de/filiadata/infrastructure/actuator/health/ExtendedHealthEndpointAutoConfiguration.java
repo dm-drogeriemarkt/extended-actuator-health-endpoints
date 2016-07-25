@@ -11,12 +11,14 @@ import de.filiadata.infrastructure.actuator.health.mvcendpoint.BasicHealthContro
 import de.filiadata.infrastructure.actuator.health.mvcendpoint.DetailHealthController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.HealthIndicatorAutoConfiguration;
+import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.actuate.health.OrderedHealthAggregator;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -83,4 +85,31 @@ public class ExtendedHealthEndpointAutoConfiguration {
         return new DetailHealthController(detailHealthEndpoint());
     }
 
+    @Bean
+    @ConditionalOnMissingBean(ApplicationAliveIndicator.class)
+    public ApplicationAliveIndicator defaultApplicationAliveIndicator(ApplicationContext applicationContext) {
+        return new DefaultApplicationAliveIndicator(applicationContext);
+    }
+
+    public static class DefaultApplicationAliveIndicator implements ApplicationAliveIndicator {
+
+        private ApplicationContext applicationContext;
+
+        @Autowired
+        public DefaultApplicationAliveIndicator(ApplicationContext applicationContext) {
+            this.applicationContext = applicationContext;
+        }
+
+        @Override
+        public Health health() {
+
+            Health.Builder healthBuilder = Health.down();
+
+            if (applicationContext != null && applicationContext.getId() != null) {
+                healthBuilder.up();
+            }
+
+            return healthBuilder.build();
+        }
+    }
 }

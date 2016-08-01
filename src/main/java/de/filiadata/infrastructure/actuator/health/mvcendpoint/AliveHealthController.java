@@ -26,7 +26,7 @@ public class AliveHealthController {
         setupDefaultStatusMapping();
     }
 
-    @RequestMapping("/${extended.health.aliveId:health/alive}")
+    @RequestMapping("${management.context-path:}/${extended.health.aliveId:health/alive}")
     public ResponseEntity<Health> health() {
         Health health = this.extendedHealthEndpoint.invoke();
         HttpStatus status = this.statusMapping.get(health.getStatus().getCode());

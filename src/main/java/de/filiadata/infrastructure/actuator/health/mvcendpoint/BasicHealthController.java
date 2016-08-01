@@ -18,7 +18,7 @@ public class BasicHealthController {
         this.extendedHealthEndpoint = extendedHealthEndpoint;
     }
 
-    @RequestMapping("/${extended.health.basicId:health/basic}")
+    @RequestMapping("${management.context-path:}/${extended.health.basicId:health/basic}")
     public ResponseEntity<Health> health() {
         Health health = this.extendedHealthEndpoint.invoke();
         return new ResponseEntity<>(health, HttpStatus.OK);

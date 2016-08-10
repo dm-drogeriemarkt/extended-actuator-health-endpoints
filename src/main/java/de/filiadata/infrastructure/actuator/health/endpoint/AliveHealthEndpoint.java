@@ -12,9 +12,8 @@ public class AliveHealthEndpoint extends ExtendedHealthEndpoint<ApplicationAlive
      *
      * @param id part of the endpoint URL
      * @param healthAggregator usually a new instance of OrderedHealthAggregator
-     * @param healthIndicators a map with HealthIndicators
      */
-    public AliveHealthEndpoint(String id, HealthAggregator healthAggregator, Map<String, ApplicationAliveIndicator> healthIndicators) {
-        super(id, healthAggregator, healthIndicators);
+    public AliveHealthEndpoint(String id, HealthAggregator healthAggregator) {
+        super(id, healthAggregator, ApplicationAliveIndicator.class);
     }
 }

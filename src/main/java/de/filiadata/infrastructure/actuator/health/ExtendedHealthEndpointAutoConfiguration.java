@@ -44,34 +44,26 @@ public class ExtendedHealthEndpointAutoConfiguration {
     @Autowired
     private ExtendedHealthProperties properties;
 
-    @Autowired(required = false)
-    public Map<String, ApplicationAliveIndicator> aliveIndicators = new HashMap<>();
-
-    @Autowired(required = false)
-    public Map<String, BasicHealthIndicator> basicHealthIndicators = new HashMap<>();
-
-    @Autowired(required = false)
-    public Map<String, HealthIndicator> allHealthIndicators = new HashMap<>();
 
     @Bean
     @ConditionalOnMissingBean(AliveHealthEndpoint.class)
     public AliveHealthEndpoint applicationAliveEndpoint() {
 
-        return new AliveHealthEndpoint(properties.getAliveId(), new OrderedHealthAggregator(), aliveIndicators);
+        return new AliveHealthEndpoint(properties.getAliveId(), new OrderedHealthAggregator());
     }
 
     @Bean
     @ConditionalOnMissingBean(BasicHealthEndpoint.class)
     public BasicHealthEndpoint basicHealthEndpoint() {
 
-        return new BasicHealthEndpoint(properties.getBasicId(), new OrderedHealthAggregator(), basicHealthIndicators);
+        return new BasicHealthEndpoint(properties.getBasicId(), new OrderedHealthAggregator());
     }
 
     @Bean
     @ConditionalOnMissingBean(DetailHealthEndpoint.class)
     public DetailHealthEndpoint detailHealthEndpoint() {
 
-        return new DetailHealthEndpoint(properties.getDetailId(), new OrderedHealthAggregator(), allHealthIndicators);
+        return new DetailHealthEndpoint(properties.getDetailId(), new OrderedHealthAggregator());
     }
 
     @Bean

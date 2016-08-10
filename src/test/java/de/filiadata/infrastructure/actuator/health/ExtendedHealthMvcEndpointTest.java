@@ -8,10 +8,13 @@ import org.junit.Test;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthAggregator;
 import org.springframework.boot.actuate.health.Status;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -23,11 +26,16 @@ public class ExtendedHealthMvcEndpointTest {
 
     private AliveHealthEndpoint extendedHealthEndpoint;
     private AliveHealthController extendedHealthMvcEndpoint;
+    private ApplicationContext applicationContext;
 
     @Before
     public void init() {
         this.extendedHealthEndpoint = mock(AliveHealthEndpoint.class);
         this.extendedHealthMvcEndpoint = new AliveHealthController(this.extendedHealthEndpoint);
+
+        this.applicationContext = mock(ApplicationContext.class);
+        this.extendedHealthEndpoint.setApplicationContext(applicationContext);
+
     }
 
     @Test
@@ -49,7 +57,13 @@ public class ExtendedHealthMvcEndpointTest {
         when(healthIndicator.health()).thenThrow(new RuntimeException("fooException"));
         Map<String, ApplicationAliveIndicator> healthIndicators = new LinkedHashMap<>();
         healthIndicators.put("foo", healthIndicator);
-        extendedHealthEndpoint = new AliveHealthEndpoint("healthIndicatorfoo", healthAggregator, healthIndicators);
+
+        when(applicationContext.getBeansOfType(ApplicationAliveIndicator.class)).thenReturn(healthIndicators);
+
+
+        extendedHealthEndpoint = new AliveHealthEndpoint("healthIndicatorfoo", healthAggregator);
+        extendedHealthEndpoint.setApplicationContext(applicationContext);
+
         this.extendedHealthMvcEndpoint = new AliveHealthController(this.extendedHealthEndpoint);
 
         ResponseEntity<Health> result = this.extendedHealthMvcEndpoint.health();

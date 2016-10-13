@@ -2,22 +2,24 @@ package de.filiadata.infrastructure.actuator.health;
 
 import de.filiadata.infrastructure.actuator.health.endpoint.ExtendedHealthEndpoint;
 import de.filiadata.infrastructure.actuator.health.indicator.BasicHealthIndicator;
-import org.junit.Before;
+import de.filiadata.infrastructure.actuator.health.indicator.DetailHealthIndicator;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.actuate.health.*;
 import org.springframework.context.ApplicationContext;
+import org.springframework.util.ClassUtils;
 
 import java.util.HashMap;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class ConfigurableHealthEndpointTest {
 
 
     @Test
-    public void down() throws Exception {
+    public void testLazyHealthIndicatorLookup() throws Exception {
 
         HashMap<String, HealthIndicator> healthIndicators = new HashMap<>();
         HealthAggregator healthAggregator = new OrderedHealthAggregator();
@@ -28,10 +30,42 @@ public class ConfigurableHealthEndpointTest {
         Mockito.when(applicationContext.getBeansOfType(HealthIndicator.class)).thenReturn(healthIndicators);
 
         Class<? extends HealthIndicator> basicHealthIndicatorClass = HealthIndicator.class;
-        ExtendedHealthEndpoint basic = new ExtendedHealthEndpoint("test", healthAggregator, basicHealthIndicatorClass);
+        ExtendedHealthEndpoint basic = new ExtendedHealthEndpoint<>("test", healthAggregator, basicHealthIndicatorClass);
         basic.setApplicationContext(applicationContext);
 
         assertThat(basic.invoke().getStatus(), is(Status.DOWN));
 
+    }
+
+    @Test
+    public void testIndicatorExclusion() throws Exception {
+
+        HashMap<String, HealthIndicator> healthIndicators = new HashMap<>();
+        HealthAggregator healthAggregator = new OrderedHealthAggregator();
+        healthIndicators.put("foo", new MyBasicHealthIndicator());
+        healthIndicators.put("Bar", new MyDetailHealthIndicator());
+
+        ApplicationContext applicationContext = Mockito.mock(ApplicationContext.class);
+        Mockito.when(applicationContext.getBeansOfType(HealthIndicator.class)).thenReturn(healthIndicators);
+
+        ExtendedHealthEndpoint<HealthIndicator> basic = new ExtendedHealthEndpoint<>("test", healthAggregator, HealthIndicator.class, DetailHealthIndicator.class);
+        basic.setApplicationContext(applicationContext);
+
+        assertThat(basic.invoke().getStatus(), is(Status.UP));
+
+    }
+
+    private static class MyDetailHealthIndicator implements DetailHealthIndicator {
+        @Override
+        public Health health() {
+            return Health.down().build();
+        }
+    }
+
+    private static class MyBasicHealthIndicator implements HealthIndicator {
+        @Override
+        public Health health() {
+            return Health.up().build();
+        }
     }
 }

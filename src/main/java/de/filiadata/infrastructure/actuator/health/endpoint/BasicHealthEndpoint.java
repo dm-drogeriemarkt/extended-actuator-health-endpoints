@@ -1,19 +1,18 @@
 package de.filiadata.infrastructure.actuator.health.endpoint;
 
-import de.filiadata.infrastructure.actuator.health.indicator.BasicHealthIndicator;
+import de.filiadata.infrastructure.actuator.health.indicator.DetailHealthIndicator;
 import org.springframework.boot.actuate.health.HealthAggregator;
+import org.springframework.boot.actuate.health.HealthIndicator;
 
-import java.util.Map;
-
-public class BasicHealthEndpoint extends ExtendedHealthEndpoint<BasicHealthIndicator> {
+public class BasicHealthEndpoint extends ExtendedHealthEndpoint<HealthIndicator> {
 
     /**
      * Create new BasicHealthEndpoint.
      *
-     * @param id part of the endpoint URL
+     * @param id               part of the endpoint URL
      * @param healthAggregator usually a new instance of OrderedHealthAggregator
      */
     public BasicHealthEndpoint(String id, HealthAggregator healthAggregator) {
-        super(id, healthAggregator, BasicHealthIndicator.class);
+        super(id, healthAggregator, HealthIndicator.class, DetailHealthIndicator.class);
     }
 }

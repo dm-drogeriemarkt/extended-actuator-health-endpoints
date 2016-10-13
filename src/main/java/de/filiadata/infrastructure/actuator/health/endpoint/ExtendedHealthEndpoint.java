@@ -13,8 +13,11 @@ import org.springframework.boot.actuate.health.HealthAggregator;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.util.ClassUtils;
 
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * ExtendedHealthEndpoint is meant to aggregate HealthIndicators like Spring Boots HealthEndpoint, but with different levels of HealthIndicators, currently:
@@ -31,7 +34,24 @@ public class ExtendedHealthEndpoint<T extends HealthIndicator> extends AbstractE
 
     private final HealthAggregator healthAggregator;
     private final Class<T> indicatorMarkerInterface;
+    private final Class<? extends HealthIndicator> excludeIndicatorMarkerInterface;
     private ApplicationContext applicationContext;
+
+    /**
+     * Create new ExtendedHealthEndpoint.
+     *
+     * @param id                              part of the endpoint URL
+     * @param healthAggregator                usually a new instance of OrderedHealthAggregator
+     * @param indicatorMarkerInterface
+     * @param excludeIndicatorMarkerInterface indicator class that should be excluded, can be null
+     */
+    public ExtendedHealthEndpoint(String id, HealthAggregator healthAggregator, Class<T> indicatorMarkerInterface, Class<? extends HealthIndicator> excludeIndicatorMarkerInterface) {
+        super(id);
+        this.healthAggregator = healthAggregator;
+        this.indicatorMarkerInterface = indicatorMarkerInterface;
+        this.excludeIndicatorMarkerInterface = excludeIndicatorMarkerInterface;
+        LOG.info("Registered ExtendedHealthEndpoint with id " + id);
+    }
 
     /**
      * Create new ExtendedHealthEndpoint.
@@ -41,10 +61,7 @@ public class ExtendedHealthEndpoint<T extends HealthIndicator> extends AbstractE
      * @param indicatorMarkerInterface
      */
     public ExtendedHealthEndpoint(String id, HealthAggregator healthAggregator, Class<T> indicatorMarkerInterface) {
-        super(id);
-        this.healthAggregator = healthAggregator;
-        this.indicatorMarkerInterface = indicatorMarkerInterface;
-        LOG.info("Registered ExtendedHealthEndpoint with id " + id);
+        this(id, healthAggregator, indicatorMarkerInterface, null);
     }
 
     @Override
@@ -69,7 +86,23 @@ public class ExtendedHealthEndpoint<T extends HealthIndicator> extends AbstractE
     }
 
     private Map<String, T> collectIndicators() {
-        return applicationContext.getBeansOfType(indicatorMarkerInterface);
+        Map<String, T> healthIndicators = applicationContext.getBeansOfType(indicatorMarkerInterface);
+        if (excludeIndicatorMarkerInterface != null) {
+            excludeHealthIndicators(healthIndicators);
+        }
+        return healthIndicators;
+    }
+
+    private void excludeHealthIndicators(Map<String, T> healthIndicators) {
+        Set<Map.Entry<String, T>> entries = healthIndicators.entrySet();
+        //we have to manually use an iterator so that we can remove entries, done to be java 7 compatible
+        Iterator<Map.Entry<String, T>> iterator = entries.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, T> healthBean = iterator.next();
+            if (ClassUtils.isAssignableValue(excludeIndicatorMarkerInterface, healthBean.getValue())) {
+                iterator.remove();
+            }
+        }
     }
 
     /**

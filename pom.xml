@@ -4,7 +4,7 @@
 
     <groupId>de.filiadata.infrastructure</groupId>
     <artifactId>extended-actuator-health-endpoints</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -186,7 +186,7 @@
         <developerConnection>
             scm:git:ssh://git@stash.dm-drogeriemarkt.com:7999/infrastructure/extended-actuator-health-endpoints.git
         </developerConnection>
-        <tag>v3.0.0-extended-actuator-health-endpoints</tag>
+        <tag>HEAD</tag>
     </scm>
 
 </project>

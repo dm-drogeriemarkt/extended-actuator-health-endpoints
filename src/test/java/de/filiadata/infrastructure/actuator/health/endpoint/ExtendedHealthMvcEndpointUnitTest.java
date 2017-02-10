@@ -1,8 +1,7 @@
-package de.filiadata.infrastructure.actuator.health;
+package de.filiadata.infrastructure.actuator.health.endpoint;
 
-import de.filiadata.infrastructure.actuator.health.endpoint.AliveHealthEndpoint;
+import de.filiadata.infrastructure.actuator.health.endpoint.mvc.ExtendedHealthMvcEndpoint;
 import de.filiadata.infrastructure.actuator.health.indicator.ApplicationAliveIndicator;
-import de.filiadata.infrastructure.actuator.health.mvcendpoint.AliveHealthController;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.actuate.health.Health;
@@ -12,9 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -22,20 +19,20 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ExtendedHealthMvcEndpointTest {
+public class ExtendedHealthMvcEndpointUnitTest {
 
     private AliveHealthEndpoint extendedHealthEndpoint;
-    private AliveHealthController extendedHealthMvcEndpoint;
+    private ExtendedHealthMvcEndpoint extendedHealthMvcEndpoint;
     private ApplicationContext applicationContext;
 
     @Before
     public void init() {
         this.extendedHealthEndpoint = mock(AliveHealthEndpoint.class);
-        this.extendedHealthMvcEndpoint = new AliveHealthController(this.extendedHealthEndpoint);
+        this.extendedHealthMvcEndpoint = new ExtendedHealthMvcEndpoint(this.extendedHealthEndpoint);
 
         this.applicationContext = mock(ApplicationContext.class);
         this.extendedHealthEndpoint.setApplicationContext(applicationContext);
-
+        when(extendedHealthEndpoint.isEnabled()).thenReturn(true);
     }
 
     @Test
@@ -43,7 +40,7 @@ public class ExtendedHealthMvcEndpointTest {
 
         when(extendedHealthEndpoint.invoke()).thenReturn(new Health.Builder().up().build());
 
-        ResponseEntity<Health> result = this.extendedHealthMvcEndpoint.health();
+        ResponseEntity<Health> result = (ResponseEntity<Health>) this.extendedHealthMvcEndpoint.invoke(null);
 
         assertThat(result.getStatusCode(), is(HttpStatus.OK));
         assertThat(result.getBody().getStatus(), is(Status.UP));
@@ -64,9 +61,9 @@ public class ExtendedHealthMvcEndpointTest {
         extendedHealthEndpoint = new AliveHealthEndpoint("healthIndicatorfoo", healthAggregator);
         extendedHealthEndpoint.setApplicationContext(applicationContext);
 
-        this.extendedHealthMvcEndpoint = new AliveHealthController(this.extendedHealthEndpoint);
+        this.extendedHealthMvcEndpoint = new ExtendedHealthMvcEndpoint(this.extendedHealthEndpoint);
 
-        ResponseEntity<Health> result = this.extendedHealthMvcEndpoint.health();
+        ResponseEntity<Health> result = (ResponseEntity<Health>) this.extendedHealthMvcEndpoint.invoke(null);
 
         Map<String, Object> expectedHealthDetails = new LinkedHashMap<>();
         expectedHealthDetails.put("error", "java.lang.RuntimeException: fooException");
@@ -80,7 +77,7 @@ public class ExtendedHealthMvcEndpointTest {
 
         when(extendedHealthEndpoint.invoke()).thenReturn(new Health.Builder().down().build());
 
-        ResponseEntity<Health> result = this.extendedHealthMvcEndpoint.health();
+        ResponseEntity<Health> result = (ResponseEntity<Health>) this.extendedHealthMvcEndpoint.invoke(null);
 
         assertThat(result.getStatusCode(), is(HttpStatus.SERVICE_UNAVAILABLE));
         assertThat(result.getBody().getStatus(), is(Status.DOWN));

@@ -1,22 +1,17 @@
-package de.filiadata.infrastructure.actuator.health;
+package de.filiadata.infrastructure.actuator.health.endpoint;
 
-import de.filiadata.infrastructure.actuator.health.endpoint.ExtendedHealthEndpoint;
-import de.filiadata.infrastructure.actuator.health.indicator.BasicHealthIndicator;
 import de.filiadata.infrastructure.actuator.health.indicator.DetailHealthIndicator;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.actuate.health.*;
 import org.springframework.context.ApplicationContext;
-import org.springframework.util.ClassUtils;
 
 import java.util.HashMap;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
-public class ConfigurableHealthEndpointTest {
-
+public class ConfigurableHealthEndpointUnitTest {
 
     @Test
     public void testLazyHealthIndicatorLookup() throws Exception {

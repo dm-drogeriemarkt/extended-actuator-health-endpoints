@@ -1,25 +1,25 @@
 {
   "properties": [
     {
-      "name": "extended.health.aliveId",
+      "name": "extended.health.alive.id",
       "type": "java.lang.String",
-      "defaultValue": "health/alive",
+      "defaultValue": "alive",
       "sourceType": "de.filiadata.infrastructure.actuator.health.ExtendedHealthProperties",
-      "description": "Endpoint id (used as url path, relative to spring boot management path) for alive check"
+      "description": "Endpoint id (used as url path, relative to spring boot management health path) for alive check"
     },
     {
-      "name": "extended.health.basicId",
+      "name": "extended.health.basic.id",
       "type": "java.lang.String",
-      "defaultValue": "health/basic",
+      "defaultValue": "basic",
       "sourceType": "de.filiadata.infrastructure.actuator.health.ExtendedHealthProperties",
-      "description": "Endpoint id (used as url path, relative to spring boot management path) for basic check"
+      "description": "Endpoint id (used as url path, relative to spring boot management health path) for basic check"
     },
     {
-      "name": "extended.health.detailId",
+      "name": "extended.health.detail.id",
       "type": "java.lang.String",
-      "defaultValue": "health/detail",
+      "defaultValue": "detail",
       "sourceType": "de.filiadata.infrastructure.actuator.health.ExtendedHealthProperties",
-      "description": "Endpoint id (used as url path, relative to spring boot management path) for detail check"
+      "description": "Endpoint id (used as url path, relative to spring boot management health path) for detail check"
     }
   ]
 }

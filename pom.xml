@@ -3,6 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>de.filiadata.pac</groupId>
+        <artifactId>pac-parent</artifactId>
+        <version>1.0.2</version>
+    </parent>
+
     <groupId>de.filiadata.infrastructure</groupId>
     <artifactId>extended-actuator-health-endpoints</artifactId>
     <version>4.0.0-SNAPSHOT</version>
@@ -10,145 +16,21 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.7</java.version>
-
-        <spring-boot.version>1.5.1.RELEASE</spring-boot.version>
-        <jacoco.version>0.7.4.201502262128</jacoco.version>
-
-        <!-- Disables strict JavaDoc doclint rules in JDK8 -->
-        <additionalparam>-Xdoclint:none</additionalparam>
-        <sonar.exclusions>
-            **/generated/*,**/*Config*,**/*Constants*,**/*Entity*,**/*Document*,**/*Mock*,**/*Properties*,**/*Decorator*
-        </sonar.exclusions>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <target>${java.version}</target>
-                    <source>${java.version}</source>
-                    <testTarget>1.8</testTarget>
-                    <testSource>1.8</testSource>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.1</version>
-                <configuration>
-                    <tagNameFormat>v@{project.version}</tagNameFormat>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
-    <profiles>
-        <profile>
-            <id>ide</id>
-            <properties>
-                <java.version>1.8</java.version>
-            </properties>
-        </profile>
-        <profile>
-            <id>instrumentation</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>${jacoco.version}</version>
-                        <configuration>
-                            <excludes>
-                                <exclude>**/*Config*.class</exclude>
-                                <exclude>**/*Constants*.class</exclude>
-                                <exclude>**/*Properties*.class</exclude>
-                            </excludes>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>default-prepare-agent</id>
-                                <goals>
-                                    <goal>prepare-agent</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>default-prepare-agent-integration</id>
-                                <goals>
-                                    <goal>prepare-agent-integration</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>default-report</id>
-                                <goals>
-                                    <goal>report</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>default-report-integration</id>
-                                <goals>
-                                    <goal>report-integration</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>default-check</id>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                                <configuration>
-                                    <rules>
-
-                                    </rules>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-actuator</artifactId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -162,18 +44,29 @@
         </dependency>
     </dependencies>
 
-    <distributionManagement>
-        <repository>
-            <id>artifactory</id>
-            <name>artifactory.dm-drogeriemarkt.com-releases</name>
-            <url>http://artifactory.dm-drogeriemarkt.com/artifactory/releases-kunde</url>
-        </repository>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <name>artifactory.dm-drogeriemarkt.com-snapshots</name>
-            <url>http://artifactory.dm-drogeriemarkt.com/artifactory/snapshots-kunde</url>
-        </snapshotRepository>
-    </distributionManagement>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <target>${java.version}</target>
+                    <source>${java.version}</source>
+                    <testTarget>1.8</testTarget>
+                    <testSource>1.8</testSource>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>ide</id>
+            <properties>
+                <java.version>1.8</java.version>
+            </properties>
+        </profile>
+    </profiles>
 
     <scm>
         <developerConnection>

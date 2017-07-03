@@ -1,42 +1,59 @@
-node {
-    stage('checkout') {
-        checkout scm
+@Library('pac-pipeline-libraries@1.2.0') _
+
+POM = readPom()
+
+pipeline {
+
+    agent any
+
+    environment {
+        COMMIT_MESSAGE = getCommitMessage()
     }
 
-    ignoreCommitWithMessage('[maven-release-plugin]') {
+    stages {
 
-        if ("${BRANCH_NAME}" != 'master') {
-            stage('build') {
-                build()
-            }
-            stage('sonar') {
-                withSonarQubeEnv {
-                    sonarAnalysis()
+        stage('Build') {
+            when {
+                expression {
+                    !(BRANCH_NAME ==~ /development|master/)
                 }
             }
-        } else {
-            stage('release and deploy') {
+            steps {
+                mvn 'clean verify'
+            }
+            post {
+                success {
+                    junit '**/target/surefire-reports/TEST-*.xml'
+                    runSonar(POM)
+                }
+            }
+        }
+
+        stage('Build and push to artifactory') {
+            when {
+                branch 'development'
+            }
+            steps {
+                mvn 'clean deploy'
+            }
+            post {
+                success {
+                    junit '**/target/surefire-reports/TEST-*.xml'
+                    runSonar(POM)
+                }
+            }
+        }
+
+        stage('Release Artifact') {
+            when {
+                expression {
+                    BRANCH_NAME == 'master' && !COMMIT_MESSAGE.startsWith('[maven-release-plugin]')
+                }
+            }
+            steps {
+                generateChangelog()
                 mvnRelease()
             }
         }
-    }
-}
-
-private boolean isPullRequest() {
-    "${BRANCH_NAME}".startsWith("PR")
-}
-
-def build() {
-    mvn "clean deploy -P instrumentation"
-}
-
-def sonarAnalysis() {
-    withCredentials([usernamePassword(credentialsId: '814d824d-8d80-424e-b5c4-06223b74b806', passwordVariable: 'sonar.stash.password', usernameVariable: 'sonar.stash.user')]) {
-        def sonarCommandline = 'sonar:sonar'
-        if (isPullRequest()) {
-            def prId = "${BRANCH_NAME}".replace('PR-', '')
-            sonarCommandline += " -Dsonar.analysis.mode=preview -Dsonar.stash.notification=true -Dsonar.stash.project=infrastructure -Dsonar.stash.repository=extended-actuator-health-endpoints -Dsonar.stash.pullrequest.id=${prId} -Dsonar.stash.password=${env.'sonar.stash.password'}"
-        }
-        mvn sonarCommandline
     }
 }

@@ -1,8 +1,8 @@
-package de.filiadata.infrastructure.actuator.health.endpoint.mvc;
+package de.dm.infrastructure.actuator.health.endpoint.mvc;
 
-import de.filiadata.infrastructure.actuator.health.endpoint.AliveHealthEndpoint;
-import de.filiadata.infrastructure.actuator.health.endpoint.BasicHealthEndpoint;
-import de.filiadata.infrastructure.actuator.health.endpoint.DetailHealthEndpoint;
+import de.dm.infrastructure.actuator.health.endpoint.AliveHealthEndpoint;
+import de.dm.infrastructure.actuator.health.endpoint.BasicHealthEndpoint;
+import de.dm.infrastructure.actuator.health.endpoint.DetailHealthEndpoint;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

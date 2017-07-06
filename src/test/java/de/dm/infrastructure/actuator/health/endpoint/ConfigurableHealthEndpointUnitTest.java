@@ -1,6 +1,6 @@
-package de.filiadata.infrastructure.actuator.health.endpoint;
+package de.dm.infrastructure.actuator.health.endpoint;
 
-import de.filiadata.infrastructure.actuator.health.indicator.DetailHealthIndicator;
+import de.dm.infrastructure.actuator.health.indicator.DetailHealthIndicator;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.actuate.health.*;

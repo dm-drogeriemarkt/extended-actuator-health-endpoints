@@ -1,12 +1,12 @@
-package de.filiadata.infrastructure.actuator.health;
+package de.dm.infrastructure.actuator.health;
 
-import de.filiadata.infrastructure.actuator.health.endpoint.AliveHealthEndpoint;
-import de.filiadata.infrastructure.actuator.health.endpoint.BasicHealthEndpoint;
-import de.filiadata.infrastructure.actuator.health.endpoint.DetailHealthEndpoint;
-import de.filiadata.infrastructure.actuator.health.endpoint.mvc.ExtendedHealthMvcEndpoint;
-import de.filiadata.infrastructure.actuator.health.indicator.ApplicationAliveIndicator;
-import de.filiadata.infrastructure.actuator.health.indicator.BasicHealthIndicator;
-import de.filiadata.infrastructure.actuator.health.indicator.DetailHealthIndicator;
+import de.dm.infrastructure.actuator.health.endpoint.AliveHealthEndpoint;
+import de.dm.infrastructure.actuator.health.endpoint.BasicHealthEndpoint;
+import de.dm.infrastructure.actuator.health.endpoint.DetailHealthEndpoint;
+import de.dm.infrastructure.actuator.health.endpoint.mvc.ExtendedHealthMvcEndpoint;
+import de.dm.infrastructure.actuator.health.indicator.ApplicationAliveIndicator;
+import de.dm.infrastructure.actuator.health.indicator.BasicHealthIndicator;
+import de.dm.infrastructure.actuator.health.indicator.DetailHealthIndicator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.HealthIndicatorAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.ManagementContextConfiguration;

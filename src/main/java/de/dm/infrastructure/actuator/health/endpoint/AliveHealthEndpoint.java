@@ -1,6 +1,6 @@
-package de.filiadata.infrastructure.actuator.health.endpoint;
+package de.dm.infrastructure.actuator.health.endpoint;
 
-import de.filiadata.infrastructure.actuator.health.indicator.ApplicationAliveIndicator;
+import de.dm.infrastructure.actuator.health.indicator.ApplicationAliveIndicator;
 import org.springframework.boot.actuate.health.HealthAggregator;
 
 public class AliveHealthEndpoint extends ExtendedHealthEndpoint<ApplicationAliveIndicator> {

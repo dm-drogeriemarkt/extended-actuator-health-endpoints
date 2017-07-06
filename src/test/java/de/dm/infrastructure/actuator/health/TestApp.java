@@ -1,4 +1,4 @@
-package de.filiadata.infrastructure.actuator.health;
+package de.dm.infrastructure.actuator.health;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

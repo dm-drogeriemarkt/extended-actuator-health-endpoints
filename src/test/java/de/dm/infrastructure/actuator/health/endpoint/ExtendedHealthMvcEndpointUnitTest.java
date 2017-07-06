@@ -1,7 +1,7 @@
-package de.filiadata.infrastructure.actuator.health.endpoint;
+package de.dm.infrastructure.actuator.health.endpoint;
 
-import de.filiadata.infrastructure.actuator.health.endpoint.mvc.ExtendedHealthMvcEndpoint;
-import de.filiadata.infrastructure.actuator.health.indicator.ApplicationAliveIndicator;
+import de.dm.infrastructure.actuator.health.endpoint.mvc.ExtendedHealthMvcEndpoint;
+import de.dm.infrastructure.actuator.health.indicator.ApplicationAliveIndicator;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.actuate.health.Health;

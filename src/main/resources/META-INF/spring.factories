@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=de.filiadata.infrastructure.actuator.health.ExtendedHealthEndpointAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=de.dm.infrastructure.actuator.health.ExtendedHealthEndpointAutoConfiguration

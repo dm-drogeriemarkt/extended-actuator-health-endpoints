@@ -1,6 +1,6 @@
-package de.filiadata.infrastructure.actuator.health.endpoint.mvc;
+package de.dm.infrastructure.actuator.health.endpoint.mvc;
 
-import de.filiadata.infrastructure.actuator.health.endpoint.ExtendedHealthEndpoint;
+import de.dm.infrastructure.actuator.health.endpoint.ExtendedHealthEndpoint;
 import org.springframework.boot.actuate.endpoint.Endpoint;
 import org.springframework.boot.actuate.endpoint.mvc.AbstractEndpointMvcAdapter;
 import org.springframework.boot.actuate.endpoint.mvc.ActuatorMediaTypes;

@@ -1,8 +1,8 @@
-package de.filiadata.infrastructure.actuator.health.endpoint;
+package de.dm.infrastructure.actuator.health.endpoint;
 
-import de.filiadata.infrastructure.actuator.health.indicator.ApplicationAliveIndicator;
-import de.filiadata.infrastructure.actuator.health.indicator.BasicHealthIndicator;
-import de.filiadata.infrastructure.actuator.health.indicator.DetailHealthIndicator;
+import de.dm.infrastructure.actuator.health.indicator.ApplicationAliveIndicator;
+import de.dm.infrastructure.actuator.health.indicator.BasicHealthIndicator;
+import de.dm.infrastructure.actuator.health.indicator.DetailHealthIndicator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;

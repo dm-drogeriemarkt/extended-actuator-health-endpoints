@@ -10,7 +10,7 @@
 
     <groupId>de.dm.infrastructure</groupId>
     <artifactId>extended-actuator-health-endpoints</artifactId>
-    <version>5.0.1-SNAPSHOT</version>
+    <version>5.0.1</version>
 
     <name>extended-actuator-health-endpoints</name>
     <description>Module that provides additional classes of HealthIndicators</description>
@@ -74,7 +74,7 @@
         <developerConnection>
             scm:git:ssh://git@stash.dm-drogeriemarkt.com:7999/infrastructure/extended-actuator-health-endpoints.git
         </developerConnection>
-        <tag>HEAD</tag>
+        <tag>5.0.1</tag>
     </scm>
 
 </project>

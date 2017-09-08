@@ -2,23 +2,47 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>de.dm.pac</groupId>
-        <artifactId>pac-parent</artifactId>
-        <version>2.1.0</version>
-    </parent>
-
     <groupId>de.dm.infrastructure</groupId>
     <artifactId>extended-actuator-health-endpoints</artifactId>
     <version>5.0.2-SNAPSHOT</version>
 
     <name>extended-actuator-health-endpoints</name>
     <description>Module that provides additional classes of HealthIndicators</description>
+    <url>https://github.com/dm-drogeriemarkt/extended-actuator-health-endpoints</url>
+
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <organization>dm-drogerie markt GmbH &amp; Co. KG</organization>
+            <organizationUrl>https://dm.de</organizationUrl>
+            <name>Fabian Buch</name>
+            <email>fabian.buch@dm.de</email>
+        </developer>
+        <developer>
+            <organization>dm-drogerie markt GmbH &amp; Co. KG</organization>
+            <organizationUrl>https://dm.de</organizationUrl>
+            <name>Jakob Fels</name>
+            <email>jakob.fels@dm.de</email>
+        </developer>
+    </developers>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.7</java.version>
+        <java.version>1.8</java.version>
     </properties>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.6.RELEASE</version>
+    </parent>
 
     <dependencies>
         <dependency>
@@ -49,13 +73,14 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
                 <configuration>
-                    <target>${java.version}</target>
-                    <source>${java.version}</source>
-                    <testTarget>1.8</testTarget>
-                    <testSource>1.8</testSource>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
         </plugins>
@@ -63,18 +88,80 @@
 
     <profiles>
         <profile>
-            <id>ide</id>
-            <properties>
-                <java.version>1.8</java.version>
-            </properties>
+            <id>build-extras</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>sign</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+    </distributionManagement>
+
     <scm>
-        <developerConnection>
-            scm:git:ssh://git@stash.dm-drogeriemarkt.com:7999/infrastructure/extended-actuator-health-endpoints.git
+        <connection>scm:git:git://github.com/dm-drogeriemarkt/extended-actuator-health-endpoints.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/dm-drogeriemarkt/extended-actuator-health-endpoints.git
         </developerConnection>
-        <tag>HEAD</tag>
+        <url>http://github.com/dm-drogeriemarkt/extended-actuator-health-endpoints/tree/master</url>
     </scm>
 
 </project>

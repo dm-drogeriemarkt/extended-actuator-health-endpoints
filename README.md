@@ -1,3 +1,6 @@
+:warning: | This repository is not being maintained anymore.
+:---: | :---
+
 # Extended Actuator Health Endpoints
 
 [![Build Status](https://travis-ci.org/dm-drogeriemarkt/extended-actuator-health-endpoints.svg?branch=master)](https://travis-ci.org/dm-drogeriemarkt/extended-actuator-health-endpoints)
